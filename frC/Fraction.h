@@ -9,8 +9,12 @@
 
 class Fraction {
    public:
+    Fraction();
+    Fraction(const BigInt &integer);
+    Fraction(const int &integer);
     Fraction(const BigInt &numerator, const BigInt &denominator);
     static Fraction fromString(const QString &str);
+    QString toLaTeXString() const;
     QString toString() const;
     Fraction operator+(const Fraction &other) const;
     Fraction operator-(const Fraction &other) const;
@@ -21,6 +25,9 @@ class Fraction {
     Fraction &operator-=(const Fraction &other);
     Fraction &operator*=(const Fraction &other);
     Fraction &operator/=(const Fraction &other);
+    bool operator==(const Fraction &other);
+    bool operator!=(const Fraction &other);
+    Fraction operator-();
 
    private:
     BigInt numerator;

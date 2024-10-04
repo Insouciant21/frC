@@ -1,4 +1,3 @@
 <RCC>
-    <qresource prefix="frC">
-    </qresource>
+  <qresource prefix="frC"/>
 </RCC>

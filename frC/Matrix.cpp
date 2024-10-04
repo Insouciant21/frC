@@ -1,107 +1,188 @@
 #include "Matrix.h"
 #include <stdexcept>
-template <typename T>
-void Matrix<T>::respec(int rows, int cols) {
+
+void Matrix::reSpec(int rows, int cols) {
+    data.resize(rows);
+    for (auto &row : data) {
+        row.resize(cols);
+    }
     r = rows;
     c = cols;
-    data.resize(rows, std::vector<T>(cols));
 }
-template <typename T>
-std::vector<T> &Matrix<T>::operator[](int index) {
-    return data[index];
+
+void Matrix::clear() {
+    data.clear();
+    r = 0;
+    c = 0;
 }
-template <typename T>
-const std::vector<T> &Matrix<T>::operator[](int index) const {
-    return data[index];
+
+int Matrix::getRow() const {
+    return r;
 }
-template <typename T>
-Matrix<T> Matrix<T>::operator+(const Matrix<T> &rhs) const {
-    Matrix result(r, c);
-    for (int i = 0; i < r; i++)
-        for (int j = 0; j < c; j++) result[i][j] = data[i][j] + rhs[i][j];
-    return result;
+
+int Matrix::getCol() const {
+    return c;
 }
-template <typename T>
-Matrix<T> Matrix<T>::operator-(const Matrix<T> &rhs) const {
-    Matrix result(r, c);
-    for (int i = 0; i < r; i++)
-        for (int j = 0; j < c; j++) result[i][j] = data[i][j] - rhs[i][j];
-    return result;
-}
-template <typename T>
-Matrix<T> Matrix<T>::operator*(const Matrix<T> &rhs) const {
-    Matrix result(r, rhs.c);
-    for (int i = 0; i < r; i++)
-        for (int j = 0; j < rhs.c; j++)
-            for (int k = 0; k < c; k++) result[i][j] += data[i][k] * rhs[k][j];
-    return result;
-}
-template <typename T>
-Matrix<T> Matrix<T>::operator*(const T &rhs) const {
-    Matrix result(r, c);
-    for (int i = 0; i < r; i++)
-        for (int j = 0; j < c; j++) result[i][j] = data[i][j] * rhs;
-    return result;
-}
-template <typename T>
-Matrix<T> Matrix<T>::transpose() const {
-    Matrix res(c, r);
-    for (int i = 0; i < r; i++)
-        for (int j = 0; j < c; j++) res[j][i] = data[i][j];
-    return res;
-}
-template <typename T>
-Matrix<T> Matrix<T>::schmidt() const {
-    Matrix res(r, c);
-    std::vector<Matrix> alpha(c, Matrix(r, 1)), epi(c, Matrix(r, 1));
-    std::vector<T> norm(c);
-    for (int i = 0; i < c; i++)
-        for (int j = 0; j < r; j++) alpha[i][j][0] = data[j][i];
-    for (int i = 0; i < c; i++) {
-        epi[i] = alpha[i];
-        for (int j = 0; j < i; j++) {
-            T dt = (alpha[i].transpose() * epi[j])[0][0] / (norm[j] * norm[j]);
-            epi[i] = epi[i] - epi[j] * dt;
-        }
-        norm[i] = sqrt((epi[i].transpose() * epi[i])[0][0]);
+
+std::vector<Fraction> &Matrix::operator[](int index) {
+    if (index < 0 || index >= r) {
+        throw std::out_of_range("Matrix index out of range");
     }
+    return data[index];
+}
 
-    for (int i = 0; i < c; i++) epi[i] = epi[i] * (1.0 / norm[i]);
+const std::vector<Fraction> &Matrix::operator[](int index) const {
+    if (index < 0 || index >= r) {
+        throw std::out_of_range("Matrix index out of range");
+    }
+    return data[index];
+}
 
-    for (int i = 0; i < r; i++)
-        for (int j = 0; j < c; j++) res[i][j] = epi[j][i][0];
+Matrix Matrix::operator+(const Matrix &rhs) const {
+    if (r != rhs.r || c != rhs.c) {
+        throw std::invalid_argument("Matrix dimensions must match for addition");
+    }
+    Matrix result(r, c);
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            result[i][j] = data[i][j] + rhs[i][j];
+        }
+    }
+    return result;
+}
 
+Matrix Matrix::operator-(const Matrix &rhs) const {
+    if (r != rhs.r || c != rhs.c) {
+        throw std::invalid_argument("Matrix dimensions must match for subtraction");
+    }
+    Matrix result(r, c);
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            result[i][j] = data[i][j] - rhs[i][j];
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::operator*(const Matrix &rhs) const {
+    if (c != rhs.r) {
+        throw std::invalid_argument("Matrix dimensions must match for multiplication");
+    }
+    Matrix result(r, rhs.c);
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < rhs.c; j++) {
+            result[i][j] = Fraction(0);
+            for (int k = 0; k < c; k++) {
+                result[i][j] = result[i][j] + data[i][k] * rhs[k][j];
+            }
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::operator*(const Fraction &rhs) const {
+    Matrix result(r, c);
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            result[i][j] = data[i][j] * rhs;
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::transpose() const {
+    Matrix res(c, r);
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            res[j][i] = data[i][j];
+        }
+    }
     return res;
 }
-template <typename T>
-T Matrix<T>::determinant() const {
-    if (r != c) throw std::invalid_argument("Matrix is not square");
+
+Fraction Matrix::determinant() const {
+    if (r != c) {
+        throw std::invalid_argument("Matrix must be square to compute determinant");
+    }
     Matrix tmp = *this;
-    T res = 1;
+    Fraction res = 1;
     for (int i = 0; i < r; i++) {
         if (tmp[i][i] == 0) {
             bool swapped = false;
             for (int k = i + 1; k < r; k++) {
                 if (tmp[k][i] != 0) {
                     std::swap(tmp[i], tmp[k]);
-                    res = -res, swapped = true;
+                    res = -res;
+                    swapped = true;
                     break;
                 }
             }
             if (!swapped) return 0;
         }
         for (int j = i + 1; j < r; j++) {
-            T ratio = tmp[j][i] / tmp[i][i];
-            for (int k = i; k < c; k++) tmp[j][k] -= ratio * tmp[i][k];
+            Fraction ratio = tmp[j][i] / tmp[i][i];
+            for (int k = i; k < c; k++) {
+                tmp[j][k] = tmp[j][k] - ratio * tmp[i][k];
+            }
         }
     }
-    for (int i = 0; i < r; i++) res *= tmp[i][i];
+    for (int i = 0; i < r; i++) {
+        res = res * tmp[i][i];
+    }
     return res;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::identity(int size) {
+Matrix Matrix::inverse() const {
+    if (r != c) {
+        throw std::invalid_argument("Matrix must be square to compute inverse");
+    }
+    Matrix augmented(r, 2 * c);
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            augmented[i][j] = data[i][j];
+        }
+        augmented[i][c + i] = Fraction(1, 1);
+    }
+    for (int i = 0; i < r; i++) {
+        if (augmented[i][i] == 0) {
+            bool swapped = false;
+            for (int k = i + 1; k < r; k++) {
+                if (augmented[k][i] != 0) {
+                    std::swap(augmented[i], augmented[k]);
+                    swapped = true;
+                    break;
+                }
+            }
+            if (!swapped) {
+                throw std::invalid_argument("Matrix is singular and cannot be inverted");
+            }
+        }
+        Fraction diag = augmented[i][i];
+        for (int j = 0; j < 2 * c; j++) {
+            augmented[i][j] = augmented[i][j] / diag;
+        }
+        for (int j = 0; j < r; j++) {
+            if (i != j) {
+                Fraction ratio = augmented[j][i];
+                for (int k = 0; k < 2 * c; k++) {
+                    augmented[j][k] = augmented[j][k] - ratio * augmented[i][k];
+                }
+            }
+        }
+    }
+    Matrix inverse(r, c);
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            inverse[i][j] = augmented[i][c + j];
+        }
+    }
+    return inverse;
+}
+
+Matrix Matrix::identity(int size) {
     Matrix res(size, size);
-    for (int i = 0; i < size; i++) res[i][i] = 1;
+    for (int i = 0; i < size; i++) {
+        res[i][i] = Fraction(1, 1);
+    }
     return res;
 }
