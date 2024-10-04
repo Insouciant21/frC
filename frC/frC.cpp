@@ -104,9 +104,8 @@ void frC::readInFromTables(QTableWidget *table, Matrix &to) {
     }
 }
 
-
-void frC::showResult(QLabel *resultWindow, const Matrix &result) {
-    QString szUrl = "https://latex.codecogs.com/svg.image?" + toLaTeX(result);
+void frC::showResult(QLabel *resultWindow, const QString &latexResult) {
+    QString szUrl = "https://latex.codecogs.com/svg.image?" + latexResult;
     resultWindow->setText("加载公式中…");
     QUrl url(szUrl);
     QEventLoop loop;
@@ -124,57 +123,26 @@ void frC::showResult(QLabel *resultWindow, const Matrix &result) {
     resultWindow->setPixmap(pm);
 }
 
-void frC::showResultDeterminant(const Fraction &result) {
-    QString latexResult = result.toLaTeXString();
-    QString szUrl = "https://latex.codecogs.com/svg.image?" + latexResult;
-    ui->resultSelf->setText("加载公式中…");
-    QUrl url(szUrl);
-    QEventLoop loop;
-    QNetworkAccessManager manager;
-    QNetworkReply *reply = manager.get(QNetworkRequest(url));
-    connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-    loop.exec();
-    QByteArray jpegData = reply->readAll();
-    QPixmap pm(ui->resultSelf->size());
-    QSvgRenderer svg_renderer(jpegData);
-    pm.fill(Qt::transparent);
-    QPainter painter(&pm);
-    svg_renderer.setAspectRatioMode(Qt::KeepAspectRatio);
-    svg_renderer.render(&painter, pm.rect());
-    ui->resultSelf->setPixmap(pm);
-}
-
 void frC::calculateBino(bool clicked) {
     readInFromTables(ui->leftInput, lhs);
     readInFromTables(ui->rightInput, rhs);
     QString mode = ui->binoMode->currentText();
-    if (mode == "加法") showResult(ui->res, lhs + rhs);
-    if (mode == "减法") showResult(ui->res, lhs - rhs);
-    if (mode == "乘法") showResult(ui->res, lhs * rhs);
+    if (mode == "加法") showResult(ui->res, toLaTeX(lhs + rhs));
+    if (mode == "减法") showResult(ui->res, toLaTeX(lhs - rhs));
+    if (mode == "乘法") showResult(ui->res, toLaTeX(lhs * rhs));
 }
 
 void frC::calculateMono(bool clicked) {
-    BigInt a, b;
-    a = 112, b = 12;
-    qDebug() << (a/b).toString();
-    qDebug() << "calculateMono called";
     readInFromTables(ui->selfInput, lhs);
-    qDebug() << "read them in";
     QString mode = ui->monoMode->currentText();
     if (mode == "乘方") {
         bool ok;
         QString power = QInputDialog::getText(this, "输入乘方次数", "乘方次数:", QLineEdit::Normal, "2", &ok);
         if (ok && !power.isEmpty()) {
-            showResult(ui->resultSelf, pow(lhs, BigInt(power)));
+            showResult(ui->resultSelf, toLaTeX(pow(lhs, BigInt(power))));
         }
     }
-    if (mode == "行列式") {
-        showResultDeterminant(lhs.determinant());
-    }
-    if (mode == "转置") {
-        showResult(ui->resultSelf, lhs.transpose());
-    }
-    if (mode == "矩阵的逆") {
-        showResult(ui->resultSelf, lhs.inverse());
-    }
+    if (mode == "行列式") showResult(ui->resultSelf, lhs.determinant().toLaTeXString());
+    if (mode == "转置") showResult(ui->resultSelf, toLaTeX(lhs.transpose()));
+    if (mode == "矩阵的逆") showResult(ui->resultSelf, toLaTeX(lhs.inverse()));
 }

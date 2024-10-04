@@ -40,20 +40,9 @@ class frC : public QMainWindow {
    public:
     frC(QWidget *parent = nullptr);
     ~frC();
-
-
-
     void resizeMatrix(QTableWidget *tableWidget, int rows, int cols);
-
-   
-
     void readInFromTables(QTableWidget *table, Matrix &to);
-
-    void showResult(QLabel *resultWindow, const Matrix &result);
-
-    void showResultDeterminant(const Fraction &result);
-
-
+    void showResult(QLabel *resultWindow, const QString &latexResult);
    private:
     Ui::frCClass *ui;
 };
