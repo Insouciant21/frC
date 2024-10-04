@@ -1,7 +1,7 @@
 #include "Matrix.h"
 #include <stdexcept>
 
-void Matrix::reSpec(int rows, int cols) {
+void Matrix::reSpec(const int &rows, const int &cols) {
     data.resize(rows);
     for (auto &row : data) {
         row.resize(cols);
@@ -91,13 +91,13 @@ Matrix Matrix::operator*(const Fraction &rhs) const {
 }
 
 Matrix Matrix::transpose() const {
-    Matrix res(c, r);
+    Matrix result(c, r);
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
-            res[j][i] = data[i][j];
+            result[j][i] = data[i][j];
         }
     }
-    return res;
+    return result;
 }
 
 Fraction Matrix::determinant() const {
@@ -105,14 +105,14 @@ Fraction Matrix::determinant() const {
         throw std::invalid_argument("Matrix must be square to compute determinant");
     }
     Matrix tmp = *this;
-    Fraction res = 1;
+    Fraction result = 1;
     for (int i = 0; i < r; i++) {
         if (tmp[i][i] == 0) {
             bool swapped = false;
             for (int k = i + 1; k < r; k++) {
                 if (tmp[k][i] != 0) {
                     std::swap(tmp[i], tmp[k]);
-                    res = -res;
+                    result = -result;
                     swapped = true;
                     break;
                 }
@@ -127,9 +127,9 @@ Fraction Matrix::determinant() const {
         }
     }
     for (int i = 0; i < r; i++) {
-        res = res * tmp[i][i];
+        result = result * tmp[i][i];
     }
-    return res;
+    return result;
 }
 
 Matrix Matrix::inverse() const {

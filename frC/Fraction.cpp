@@ -66,7 +66,7 @@ Fraction Fraction::operator-(const Fraction &other) const {
 
 Fraction Fraction::operator*(const Fraction &other) const {
     Fraction result = *this;
-    result.numerator = this->numerator * other.numerator; 
+    result.numerator = this->numerator * other.numerator;
     result.denominator = this->denominator * other.denominator;
     result.reduce();
     return result;
@@ -119,7 +119,7 @@ bool Fraction::operator!=(const Fraction &other) {
 
 Fraction Fraction::operator-() {
     Fraction result = *this;
-    result.numerator = -result.numerator; 
+    result.numerator = -result.numerator;
     result.reduce();
     return result;
 }
@@ -134,7 +134,6 @@ BigInt gcd(const BigInt &a, const BigInt &b) {
     }
     return x;
 }
-
 
 void Fraction::reduce() {
     BigInt g = gcd(numerator, denominator);

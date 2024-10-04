@@ -84,13 +84,10 @@ Matrix pow(Matrix base, BigInt exponent) {
     }
     return result;
 }
-
-Matrix lhs, rhs;
 // bool networkConnected = false; TO DO
 
 void frC::readInFromTables(QTableWidget *table, Matrix &to) {
-    int r = table->rowCount(), c = table->columnCount();
-    qDebug() << "Resizing matrix to" << r << "rows and" << c << "columns";
+    const int r = table->rowCount(), c = table->columnCount();
     to.reSpec(r, c);
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
@@ -105,7 +102,7 @@ void frC::readInFromTables(QTableWidget *table, Matrix &to) {
 }
 
 void frC::showResult(QLabel *resultWindow, const QString &latexResult) {
-    QString szUrl = "https://latex.codecogs.com/svg.image?" + latexResult;
+    const QString szUrl = "https://latex.codecogs.com/svg.image?" + latexResult;
     resultWindow->setText("加载公式中…");
     QUrl url(szUrl);
     QEventLoop loop;
@@ -124,6 +121,7 @@ void frC::showResult(QLabel *resultWindow, const QString &latexResult) {
 }
 
 void frC::calculateBino(bool clicked) {
+    Matrix lhs, rhs;
     readInFromTables(ui->leftInput, lhs);
     readInFromTables(ui->rightInput, rhs);
     QString mode = ui->binoMode->currentText();
@@ -133,6 +131,7 @@ void frC::calculateBino(bool clicked) {
 }
 
 void frC::calculateMono(bool clicked) {
+    Matrix lhs;
     readInFromTables(ui->selfInput, lhs);
     QString mode = ui->monoMode->currentText();
     if (mode == "乘方") {

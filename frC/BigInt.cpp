@@ -170,7 +170,7 @@ std::pair<BigInt, BigInt> BigInt::divide(const BigInt &a, const BigInt &b) {
     quotient.digits.resize(a.digits.size());
     for (long long i = a.digits.size() - 1; i >= 0; i--) {
         remainder = remainder * BigInt(10) + BigInt(a.digits[i]);
-        int q = 0, l = 0, r = 9; 
+        int q = 0, l = 0, r = 9;
         while (l <= r) {
             int m = (l + r) / 2;
             if (b * BigInt(m) <= remainder) {
@@ -204,7 +204,7 @@ BigInt BigInt::multiply(const BigInt &a, const BigInt &b) {
         }
     }
     result.removeLeadingZeros();
-    result.isNegative = a.isNegative != b.isNegative; 
+    result.isNegative = a.isNegative != b.isNegative;
     return result;
 }
 
