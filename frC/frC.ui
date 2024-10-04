@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frCClass</class>
+ <widget class="QMainWindow" name="frCClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>863</width>
+    <height>785</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>计算器v2</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="calc">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="bino">
+       <attribute name="title">
+        <string>双</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1">
+        <item>
+         <layout class="QVBoxLayout" name="inputBino">
+          <item>
+           <layout class="QVBoxLayout" name="leftHandBino">
+            <item>
+             <widget class="QTableWidget" name="leftInput"/>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="rcLeft">
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="rSpinBoxLeft"/>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="cSpinBoxLeft"/>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="cLabelLeft">
+                <property name="text">
+                 <string>列</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="rLabelLeft">
+                <property name="text">
+                 <string>行</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="rightHandBino">
+            <item>
+             <widget class="QTableWidget" name="tableWidget"/>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="rcRight">
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="rSpinBoxRight"/>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="cLabelRight">
+                <property name="text">
+                 <string>列</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="rLabelRight">
+                <property name="text">
+                 <string>行</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="cSpinBoxRight"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="resultBino">
+          <item>
+           <layout class="QVBoxLayout" name="resBino" stretch="1,10">
+            <item>
+             <widget class="QLabel" name="resLabelBino">
+              <property name="maximumSize">
+               <size>
+                <width>35</width>
+                <height>165</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">.rotate-text {
+  transform: rotate(90deg);
+}</string>
+              </property>
+              <property name="text">
+               <string>Result</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="res">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="functionBino">
+            <item alignment="Qt::AlignmentFlag::AlignBottom">
+             <widget class="QComboBox" name="binoMode">
+              <item>
+               <property name="text">
+                <string>加法</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>减法</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>乘法</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignmentFlag::AlignBottom">
+             <widget class="QPushButton" name="binoCalc">
+              <property name="text">
+               <string>计算</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="mono">
+       <attribute name="title">
+        <string>单</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+        <item>
+         <layout class="QVBoxLayout" name="inputMono">
+          <item>
+           <layout class="QVBoxLayout" name="selfMono">
+            <item>
+             <widget class="QTableWidget" name="selfInput"/>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="rcSelf">
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="rSpinBoxSelf"/>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="cSpinBoxSelf"/>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="rLabelSelf">
+                <property name="text">
+                 <string>行</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="cLabelSelf">
+                <property name="text">
+                 <string>列</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="resultMono">
+          <item>
+           <layout class="QVBoxLayout" name="resMono" stretch="1,10">
+            <item>
+             <widget class="QLabel" name="resLabelSelf">
+              <property name="maximumSize">
+               <size>
+                <width>35</width>
+                <height>165</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">.rotate-text {
+  transform: rotate(90deg);
+}</string>
+              </property>
+              <property name="text">
+               <string>Result</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="resultSelf">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="functionMono">
+            <item alignment="Qt::AlignmentFlag::AlignBottom">
+             <widget class="QComboBox" name="monoMode">
+              <item>
+               <property name="text">
+                <string>乘方</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>行列式</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>正交化</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>转置</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignmentFlag::AlignBottom">
+             <widget class="QPushButton" name="monoCalc">
+              <property name="text">
+               <string>计算</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>页</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="frC.qrc"/>
+ </resources>
+ <connections/>
+</ui>
