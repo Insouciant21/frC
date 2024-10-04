@@ -23,7 +23,7 @@ class Fraction {
     Fraction operator*(const Fraction &other) const;
     Fraction operator/(const Fraction &other) const;
     Fraction pow(BigInt exponent) const;
-    Fraction operator-();
+    Fraction operator-() const;
 
     Fraction &operator+=(const Fraction &other);
     Fraction &operator-=(const Fraction &other);

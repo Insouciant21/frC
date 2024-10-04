@@ -117,7 +117,7 @@ bool Fraction::operator!=(const Fraction &other) {
     return !(*this == other);
 }
 
-Fraction Fraction::operator-() {
+Fraction Fraction::operator-() const {
     Fraction result = *this;
     result.numerator = -result.numerator;
     result.reduce();

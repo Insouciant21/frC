@@ -19,27 +19,27 @@ frC::~frC() {
     delete ui;
 }
 
-void frC::on_cSpinBoxLeft_valueChanged(int value) {
+void frC::on_cSpinBoxLeft_valueChanged(int value) const {
     resizeMatrix(ui->leftInput, ui->rSpinBoxLeft->value(), value);
 }
 
-void frC::on_rSpinBoxLeft_valueChanged(int value) {
+void frC::on_rSpinBoxLeft_valueChanged(int value) const {
     resizeMatrix(ui->leftInput, value, ui->cSpinBoxLeft->value());
 }
 
-void frC::on_cSpinBoxRight_valueChanged(int value) {
+void frC::on_cSpinBoxRight_valueChanged(int value) const {
     resizeMatrix(ui->rightInput, ui->rSpinBoxRight->value(), value);
 }
 
-void frC::on_rSpinBoxRight_valueChanged(int value) {
+void frC::on_rSpinBoxRight_valueChanged(int value) const {
     resizeMatrix(ui->rightInput, value, ui->cSpinBoxRight->value());
 }
 
-void frC::on_cSpinBoxSelf_valueChanged(int value) {
+void frC::on_cSpinBoxSelf_valueChanged(int value) const {
     resizeMatrix(ui->selfInput, ui->rSpinBoxSelf->value(), value);
 }
 
-void frC::on_rSpinBoxSelf_valueChanged(int value) {
+void frC::on_rSpinBoxSelf_valueChanged(int value) const {
     resizeMatrix(ui->selfInput, value, ui->cSpinBoxSelf->value());
 }
 
@@ -48,15 +48,15 @@ void frC::resizeMatrix(QTableWidget *tableWidget, int rows, int cols) {
     tableWidget->setColumnCount(cols);
 }
 
-void frC::clearLeft(bool clicked) {
+void frC::clearLeft(bool clicked) const {
     ui->leftInput->clearContents();
 }
 
-void frC::clearRight(bool clicked) {
+void frC::clearRight(bool clicked) const {
     ui->rightInput->clearContents();
 }
 
-void frC::clearSelf(bool clicked) {
+void frC::clearSelf(bool clicked) const {
     ui->selfInput->clearContents();
 }
 
@@ -68,7 +68,8 @@ QString toLaTeX(const Matrix &mat) {
             latexResult += "&";
         }
         latexResult.removeLast();
-        latexResult += "\\\\[8pt]";
+        latexResult += "\\\\";
+        if (i != mat.getRow() - 1) latexResult += "[8pt]";
     }
     latexResult += "\\end{bmatrix}";
     return latexResult;
@@ -84,7 +85,6 @@ Matrix pow(Matrix base, BigInt exponent) {
     }
     return result;
 }
-// bool networkConnected = false; TO DO
 
 void frC::readInFromTables(QTableWidget *table, Matrix &to) {
     const int r = table->rowCount(), c = table->columnCount();
@@ -111,7 +111,7 @@ void frC::showResult(QLabel *resultWindow, const QString &latexResult) {
     connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
     QByteArray jpegData = reply->readAll();
-    QPixmap pm(resultWindow->size());
+    QPixmap pm(resultWindow->size() * 0.98);
     QSvgRenderer svg_renderer(jpegData);
     pm.fill(Qt::transparent);
     QPainter painter(&pm);
